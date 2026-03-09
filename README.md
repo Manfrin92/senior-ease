@@ -72,8 +72,6 @@ app/
 ├── layouts/
 │   ├── blocks/
 │   └── structure/
-├── pages/
-├── public/
 ├── styles/
 ├── types/
 └── utils/
