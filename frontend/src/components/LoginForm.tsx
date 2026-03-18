@@ -41,7 +41,7 @@ const LoginForm = () => {
             Senior Ease
           </h1>
           <p className="text-lg text-muted-foreground">
-            Welcome back! Please sign in to continue.
+            Bem vindo! Por favor, faça login para iniciar 
           </p>
         </div>
 
@@ -54,12 +54,12 @@ const LoginForm = () => {
           {/* Email */}
           <div className="space-y-2">
             <Label htmlFor="email" className="text-lg font-semibold text-foreground">
-              Email Address
+              Endereço de email
             </Label>
             <Input
               id="email"
               type="email"
-              placeholder="you@example.com"
+              placeholder="exemplo@exemplo.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               autoComplete="email"
@@ -70,13 +70,13 @@ const LoginForm = () => {
           {/* Password */}
           <div className="space-y-2">
             <Label htmlFor="password" className="text-lg font-semibold text-foreground">
-              Password
+              Senha
             </Label>
             <div className="relative">
               <Input
                 id="password"
                 type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
+                placeholder="Insira sua senha"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 autoComplete="current-password"
@@ -97,7 +97,7 @@ const LoginForm = () => {
           {/* Forgot password link */}
           <div className="text-right">
             <Button variant="link" type="button" className="text-base px-0 h-auto">
-              Forgot password?
+              Esqueceu a senha?
             </Button>
           </div>
 
@@ -109,32 +109,32 @@ const LoginForm = () => {
             disabled={isLoading}
           >
             {isLoading ? (
-              <span className="animate-pulse">Signing in…</span>
+              <span className="animate-pulse">Iniciando…</span>
             ) : (
               <>
                 <LogIn aria-hidden="true" />
-                Sign In
+                Login
               </>
             )}
           </Button>
 
           {/* Sign up prompt */}
           <p className="text-center text-lg text-muted-foreground">
-            Don't have an account?{" "}
+            Não possui uma conta?{" "}
             <Button variant="link" type="button" className="text-lg px-0 h-auto font-bold">
-              Create one
+              Crie uma
             </Button>
           </p>
         </form>
 
         {/* Accessibility note */}
         <p className="text-center text-base text-muted-foreground">
-          Need help? Call us at{" "}
+          Precisa de ajuda? Entre em contato{" "}
           <a
-            href="tel:+18001234567"
+            href="tel:+08001234567"
             className="font-semibold text-primary underline underline-offset-4 hover:text-primary/80 transition-colors"
           >
-            1-800-123-4567
+            0-800-123-4567
           </a>
         </p>
       </div>
