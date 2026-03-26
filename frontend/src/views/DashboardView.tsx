@@ -220,10 +220,18 @@ export default function DashboardView() {
                 </div>
               ) : (
                 tasks.map((task) => (
-                  <button
+                  <div
                     key={task.id}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => toggleTask(task.id)}
-                    className={`flex w-full items-center gap-4 rounded-xl border-2 p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/40 ${
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        toggleTask(task.id);
+                      }
+                    }}
+                    className={`flex w-full items-center gap-4 rounded-xl border-2 p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/40 cursor-pointer ${
                       task.done
                         ? "border-success/40 bg-success/10"
                         : "border-border bg-card hover:border-primary/40 hover:bg-primary-light"
@@ -244,7 +252,7 @@ export default function DashboardView() {
                       {task.label}
                     </span>
                     {task.done && <CheckCircle2 className="h-6 w-6 text-success" aria-hidden />}
-                  </button>
+                  </div>
                 ))
               )}
               <Button
