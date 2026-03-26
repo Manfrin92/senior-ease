@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
+import { isLoggedIn, setLoggedOut, getCurrentUser } from "@/lib/auth";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
@@ -64,21 +65,28 @@ export default function DashboardView() {
   const [history, setHistory] = useState<ActivityEntry[]>(initialHistory);
 
   useEffect(() => {
-    setTasks(loadTasks());
+    const user = getCurrentUser();
+    setTasks(loadTasks(user));
     setHasLoadedTasks(true);
   }, []);
+
+  useEffect(() => {
+    if (!isLoggedIn()) {
+      router.replace("/");
+    }
+  }, [router]);
 
   useEffect(() => {
     if (!hasLoadedTasks) {
       return;
     }
 
-    saveTasks(tasks);
+    saveTasks(tasks, getCurrentUser());
   }, [hasLoadedTasks, tasks]);
 
   useEffect(() => {
     const syncTasks = () => {
-      setTasks(loadTasks());
+      setTasks(loadTasks(getCurrentUser()));
     };
 
     const handleVisibilityChange = () => {
@@ -170,7 +178,10 @@ export default function DashboardView() {
               variant="outline"
               size="sm"
               className="gap-2 text-base"
-              onClick={() => router.push("/")}
+              onClick={() => {
+                setLoggedOut();
+                router.push("/");
+              }}
               aria-label="Sair"
             >
               <LogOut className="h-5 w-5" aria-hidden />
@@ -210,10 +221,18 @@ export default function DashboardView() {
                 </div>
               ) : (
                 tasks.map((task) => (
-                  <button
+                  <div
                     key={task.id}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => toggleTask(task.id)}
-                    className={`flex w-full items-center gap-4 rounded-xl border-2 p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/40 ${
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter" || event.key === " ") {
+                        event.preventDefault();
+                        toggleTask(task.id);
+                      }
+                    }}
+                    className={`flex w-full items-center gap-4 rounded-xl border-2 p-4 text-left transition-all focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-ring/40 cursor-pointer ${
                       task.done
                         ? "border-success/40 bg-success/10"
                         : "border-border bg-card hover:border-primary/40 hover:bg-primary-light"
@@ -234,7 +253,7 @@ export default function DashboardView() {
                       {task.label}
                     </span>
                     {task.done && <CheckCircle2 className="h-6 w-6 text-success" aria-hidden />}
-                  </button>
+                  </div>
                 ))
               )}
               <Button
